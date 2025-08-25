@@ -1,0 +1,21 @@
+name: Enviar resumen mensual
+
+on:
+  schedule:
+    # Cada día 1 del mes a las 11:00 UTC
+    - cron: "0 11 1 * *"
+
+jobs:
+  call-supabase-function:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llamar a la Edge Function de Supabase
+        run: |
+          curl -X POST \
+            "$FUNCTION_URL" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}'
+        env:
+          FUNCTION_URL: ${{ secrets.FUNCTION_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
